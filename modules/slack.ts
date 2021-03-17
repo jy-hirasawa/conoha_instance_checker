@@ -22,7 +22,7 @@ export const getBlockRecover = (serverName: string, status: string, updated: str
                 type: 'plain_text',
                 text:
                     serverName +
-                    'のVPN状態が' +
+                    'のVPS状態が' +
                     status +
                     'に変わりました。(' +
                     moment(updated).format('YYYY/MM/DD HH:mm:ss') +
