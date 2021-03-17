@@ -1,11 +1,11 @@
 # conoha_instance_checker
 Conoha Instance Status Checker
 
-#install
+## install
 yarn install
 
-#setting
+## setting
 copy .env.sample to .env
 
-#command
+## command
 yarn checkStatus
