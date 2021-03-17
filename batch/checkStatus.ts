@@ -4,8 +4,12 @@ import 'dotenv/config'
 import * as fs from 'fs'
 import { getBlockRecover, webhook } from '../modules/slack'
 
-const getToken = async (): Promise<AxiosResponse> => {
-    const url = 'https://identity.tyo1.conoha.io/v2.0/tokens'
+/**
+ * Identity
+ * tokens
+ */
+const getTokens = async (): Promise<AxiosResponse> => {
+    const url: string = 'https://identity.tyo1.conoha.io/v2.0/tokens'
     return await axios.post(url, {
         auth: {
             passwordCredentials: { username: process.env.API_USERNAME, password: process.env.API_PASSWORD },
@@ -14,9 +18,25 @@ const getToken = async (): Promise<AxiosResponse> => {
     })
 }
 
-const getStatus = async (token: string, serverId: string): Promise<AxiosResponse> => {
-    const url = 'https://compute.tyo1.conoha.io/v2/' + process.env.TENANT_ID + '/servers/' + serverId
+/**
+ * Compute
+ * servers
+ */
+const getServers = async (token: string): Promise<AxiosResponse> => {
+    const url: string = 'https://compute.tyo1.conoha.io/v2/' + process.env.TENANT_ID + '/servers'
+    return await axios.get(url, {
+        headers: {
+            'X-Auth-Token': token
+        }
+    })
+}
 
+/**
+ * Compute
+ * servers/{server_id}
+ */
+const getStatus = async (token: string, serverId: string): Promise<AxiosResponse> => {
+    const url: string = 'https://compute.tyo1.conoha.io/v2/' + process.env.TENANT_ID + '/servers/' + serverId
     return await axios.get(url, {
         headers: {
             'X-Auth-Token': token
@@ -32,33 +52,47 @@ const getStatus = async (token: string, serverId: string): Promise<AxiosResponse
 
 ;(async () => {
     try {
-        const SERVER_ID = process.argv[2]
-
-        let preStatus: { status: string }
-        try {
-            preStatus = require('status/' + SERVER_ID + '.json')
-        } catch (e) {
-            preStatus = { status: '' }
-        }
-
         // トークン取得
-        const responseToken: AxiosResponse = await getToken()
-        const token: string = String(responseToken.data.access.token.id)
+        const responseTokens: AxiosResponse = await getTokens()
+        const token: string = String(responseTokens.data.access.token.id)
 
-        // サーバー状態取得
-        const responseStatus: AxiosResponse = await getStatus(token, SERVER_ID)
-        const server: any = responseStatus.data.server
-        consola.log(server)
+        // サーバー一覧取得
+        const responseServers: AxiosResponse = await getServers(token)
+        const serves: string[] = responseServers.data.servers.map((server: { id: string }) => {
+            return server.id
+        })
 
-        if (server.status !== preStatus.status) {
-            const blocks = getBlockRecover(server.metadata.instance_name_tag, server.status)
-            await webhook.send({ blocks })
+        // 各サーバーのステータス確認
+        for (const serverId of serves) {
+            //各ステータスの記録ファイル
+            const statusFile = 'status/' + serverId + '.json'
+            //前回のステータス
+            let preStatus: { status: string }
+            //ファイル未作成の状態をcatchで処理
+            try {
+                preStatus = require(statusFile)
+            } catch (e) {
+                preStatus = { status: '' }
+            }
 
-            const status = { status: server.status }
-            fs.writeFile('status/' + SERVER_ID + '.json', JSON.stringify(status), (err) => {
-                if (err) throw err
-                consola.log('正常に書き込みが完了しました')
-            })
+            // サーバー状態取得
+            const responseStatus: AxiosResponse = await getStatus(token, serverId)
+            const server: { status: string; updated: string; metadata: { instance_name_tag: string } } =
+                responseStatus.data.server
+
+            //ステータスの確認
+            if (server.status !== preStatus.status) {
+                consola.log('%s -> %s', preStatus.status, server.status)
+                //slackに通知
+                const blocks = getBlockRecover(server.metadata.instance_name_tag, server.status, server.updated)
+                await webhook.send({ blocks })
+
+                //現在のステータスを書き出し
+                const status = { status: server.status }
+                fs.writeFile(statusFile, JSON.stringify(status), (err) => {
+                    if (err) throw err
+                })
+            }
         }
     } catch (e) {
         consola.fatal(e)

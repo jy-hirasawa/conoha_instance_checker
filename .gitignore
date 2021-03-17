@@ -106,5 +106,5 @@ dist
 # IntelliJ
 .idea
 
-# status
+# custom
 status/*.json

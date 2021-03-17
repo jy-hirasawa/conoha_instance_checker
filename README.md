@@ -8,4 +8,4 @@ yarn install
 copy .env.sample to .env
 
 #command
-yarn checkStatus {instance id} 
+yarn checkStatus
