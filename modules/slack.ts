@@ -1,10 +1,13 @@
 import 'dotenv/config'
-import moment from 'moment-timezone'
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+import 'dayjs/locale/ja'
 import { IncomingWebhook } from '@slack/webhook'
 import { Block, KnownBlock } from '@slack/types'
-
 // noinspection JSUnresolvedFunction
-moment.tz.setDefault('Asia/Tokyo')
+dayjs.extend(timezone)
+dayjs.tz.setDefault('Asia/Tokyo')
+dayjs.locale('ja')
 
 /**
  * webhook生成
@@ -25,7 +28,7 @@ export const getBlockRecover = (serverName: string, status: string, updated: str
                     'のVPS状態が' +
                     status +
                     'に変わりました。(' +
-                    moment(updated).format('YYYY/MM/DD HH:mm:ss') +
+                    dayjs(updated).format('YYYY/MM/DD HH:mm:ss') +
                     ')'
             }
         }
