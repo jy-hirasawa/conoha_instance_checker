@@ -6,7 +6,14 @@ module.exports = {
         node: true,
         jest: true
     },
-    extends: ['standard', 'eslint:recommended', 'prettier', 'plugin:prettier/recommended'],
+    extends: [
+        'standard',
+        'eslint:recommended',
+        'prettier',
+        'plugin:prettier/recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/stylistic'
+    ],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly'
