@@ -5,7 +5,7 @@ Conoha Instance Status Checker
 yarn install
 
 ## setting
-copy .env.sample to .env
+copy .env.sample.v2 or .env.sample.v3 to .env
 
 ## command
 yarn checkStatus
