@@ -629,9 +629,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"conoha_recover@workspace:.":
+"conoha_instancew_checker@workspace:.":
   version: 0.0.0-use.local
-  resolution: "conoha_recover@workspace:."
+  resolution: "conoha_instancew_checker@workspace:."
   dependencies:
     "@slack/types": ^2.11.0
     "@slack/webhook": ^7.0.2

@@ -111,3 +111,5 @@ status/*.json
 
 # yarn
 .yarn/cache
+
+.env.v*

@@ -1,6 +1,6 @@
 {
-    "name": "conoha_recover",
-    "version": "1.0.0",
+    "name": "conoha_instance_checker",
+    "version": "1.1.0",
     "description": "",
     "main": "index.js",
     "scripts": {

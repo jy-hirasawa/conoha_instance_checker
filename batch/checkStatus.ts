@@ -56,23 +56,12 @@ const parseTokens = async (responseTokens: AxiosResponse) => {
  * servers
  */
 const getServers = async (token: string): Promise<AxiosResponse> => {
-    let url = ''
-    switch (process.env.API_VERSION) {
-        case 'v3':
-            url = process.env.API_COMPUTE_SERVICE + '/servers'
-            return await axios.get(url, {
-                headers: {
-                    'X-Auth-Token': token
-                }
-            })
-        default: // v2
-            url = process.env.API_COMPUTE_SERVICE + '/' + process.env.TENANT_ID + '/servers'
-            return await axios.get(url, {
-                headers: {
-                    'X-Auth-Token': token
-                }
-            })
-    }
+    const url = process.env.API_COMPUTE_SERVICE + '/servers'
+    return await axios.get(url, {
+        headers: {
+            'X-Auth-Token': token
+        }
+    })
 }
 
 /**
@@ -90,7 +79,7 @@ const getStatus = async (token: string, serverId: string): Promise<AxiosResponse
                 }
             })
         default: // v2
-            url = process.env.API_COMPUTE_SERVICE + '/' + process.env.TENANT_ID + '/servers/' + serverId
+            url = process.env.API_COMPUTE_SERVICE + '/servers/' + serverId
             return await axios.get(url, {
                 headers: {
                     'X-Auth-Token': token
