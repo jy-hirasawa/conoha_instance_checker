@@ -1,4 +1,4 @@
 #!/usr/bin/bash
 
-cd /var/www/conoha_instance_checker
+cd ..
 yarn checkStatus
