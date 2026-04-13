@@ -11,27 +11,27 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "@slack/types": "^2.20.0",
-        "@types/node": "^25.2.3",
-        "eslint": "^9.39.2",
-        "eslint-config-prettier": "^10.1.8",
+        "@slack/types": "^2.20.1",
+        "@types/node": "^16.18.0",
+        "eslint": "^8.57.1",
+        "eslint-config-prettier": "^9.1.2",
         "eslint-config-standard": "^17.1.0",
         "eslint-plugin-import": "^2.32.0",
-        "eslint-plugin-n": "^17.23.2",
+        "eslint-plugin-n": "^17.24.0",
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-prettier": "^5.5.5",
         "eslint-plugin-promise": "^7.2.1",
-        "prettier": "^3.8.1",
-        "typescript-eslint": "^8.55.0"
+        "prettier": "^3.8.2",
+        "typescript-eslint": "^8.58.1"
     },
     "dependencies": {
-        "@slack/webhook": "^7.0.6",
-        "axios": "^1.13.5",
+        "@slack/webhook": "^7.0.8",
+        "axios": "^1.15.0",
         "consola": "^3.4.2",
-        "dayjs": "^1.11.19",
-        "dotenv": "^17.2.4",
+        "dayjs": "^1.11.20",
+        "dotenv": "^17.4.2",
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0",
-        "typescript": "^5.9.3"
+        "typescript": "^5.9.2"
     }
 }
